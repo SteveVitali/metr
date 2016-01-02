@@ -5,7 +5,11 @@ var User = mongoose.Schema({
   email: String,
   password: String,
   firstName: String,
-  lastName: String
+  lastName: String,
+  currentSpace: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ParkingSpace'
+  }
 });
 
 User.plugin(passportLocalMongoose, {
