@@ -1,8 +1,12 @@
-doctype html
-html
-  head
-    title= title
-    script(src='/build/main.js')
-    link(rel='stylesheet', href='/styles/style.css')
-  body
+extends layout
+
+block content
+  .container
+    if (!user)
+      a(href='/login') Login
+      br
+      a(href='/register') Register
+    else
+      p Logged in as #{user.email}
+      a(href='/logout') Logout
     #app
