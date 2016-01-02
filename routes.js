@@ -3,6 +3,7 @@ var passport = require('passport');
 var router = express.Router();
 var user = require('./controllers/user');
 var User = require('./models/user');
+var m2x = require('./controllers/m2x-controller'); 
 
 var isLoggedIn = function(req) {
   return !!req.user;
@@ -56,4 +57,15 @@ module.exports = function(app) {
     req.logout();
     res.redirect('/');
   });
+
+  /*
+   * M2X DEVICE ROUTES
+   */
+
+  app.get('/debug/devices', function(req, res) {
+    m2x.list(function(err, data) {
+      res.send(data);
+    });
+  });
+
 };
