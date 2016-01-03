@@ -46,6 +46,7 @@ ParkingSpace.statics.findAvailable = function(callback) {
 
 ParkingSpace.statics.ownedByUser = function(userId, callback) {
   return this.find({ owner: userId }).exec(callback);
+};
 
 //M2X ID.
 ParkingSpace.statics.findByDeviceID = function(deviceID, callback) {
