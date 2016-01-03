@@ -13,6 +13,18 @@ exports.getAll = function(req, res) {
   });
 };
 
+exports.getParkingSaturation = function (req, res) {
+  ParkingSpace.find({})
+  .exec(function(err, spaces) {
+    if (err) return onErr(err, res);
+    var numAvailable = spaces.filter(function (space) {
+      return space.isAvailable;
+    }).length;
+    var saturation = numAvailable / spaces.length * 100;
+    res.send(saturation)
+  }
+}
+
 exports.findById = function(req, res) {
   ParkingSpace.findById(req.params.id, function(err, space) {
     if (err) return onErr(err, res);
