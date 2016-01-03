@@ -17,6 +17,7 @@ var ParkingSpace = mongoose.Schema({
     type: Boolean,
     default: true
   },
+  occupiedAt: Date,
   hourlyRate: Number,
   location: [Number], // [Longitude, Latitude]
   address: {
