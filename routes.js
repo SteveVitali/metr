@@ -66,6 +66,10 @@ module.exports = function(app) {
   app.get('/parking-space/leave', parkingSpace.leave);
   app.get('/parking-space/occupy/:id', parkingSpace.occupy);
 
+  // POST versions for m2x
+  app.post('/parking-space/leave', parkingSpace.leave);
+  app.post('/parking-space/occupy/:id', parkingSpace.occupy);
+
   app.post('/white-pages/identity-check', whitePages.identityCheck);
 
   // JSON API endpoints
