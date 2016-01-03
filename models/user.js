@@ -9,7 +9,11 @@ var User = mongoose.Schema({
   currentSpace: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'ParkingSpace'
-  }
+  },
+  spaces: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ParkingSpace'
+  }]
 });
 
 User.plugin(passportLocalMongoose, {

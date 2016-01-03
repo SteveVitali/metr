@@ -10,12 +10,45 @@ var ParkingSpace = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-  occupiedUntil: Date,
   // False if space occupied or owner has closed spot
   isAvailable: Boolean,
   hourlyRate: Number,
-  latitude: Number,
-  longitude: Number
+  location: [Number] // Longitude, Latitude
 });
+
+ParkingSpace.statics.findAvailable = function(callback) {
+  return this.find({ isAvailable: true }).exec(callback);
+};
+
+ParkingSpace.statics.findNearby = function(lng, lat, meters, callback) {
+  return this.find({
+    location: {
+      $nearSphere: {
+        $geometry: {
+          type: 'Point',
+          coordinates: [lng, lat]
+        },
+        $minDistance: 0,
+        $maxDistance: meters
+      }
+    }
+  }).exec(callback);
+};
+
+Parkingspace.statics.findAvailableNearby = function(lng, lat, meters, callback) {
+  return this.find({
+    location: {
+      $nearSphere: {
+        $geometry: {
+          type: 'Point',
+          coordinates: [lng, lat]
+        },
+        $minDistance: 0,
+        $maxDistance: meters
+      }
+    },
+    isAvailable: true
+  }).exec(callback);
+};
 
 module.exports = mongoose.model('ParkingSpace', ParkingSpace);
