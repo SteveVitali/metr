@@ -1,7 +1,9 @@
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
+var Loader = require('react-loader');
 var moment = require('moment');
 var numeral = require('numeral');
+var request = require('superagent');
 
 var ParkingSpaceView = React.createClass({
   propTypes: {
@@ -15,12 +17,45 @@ var ParkingSpaceView = React.createClass({
   },
 
   getInitialState() {
-    return {};
+    return {
+      space: this.props.space,
+      loaded: true
+    };
+  },
+
+  updateHourlyRate(e) {
+    var space = this.state.space;
+    var value = e.target.value;
+    if (isNaN(value)) return;
+    space.hourlyRate = value;
+    this.setState({
+      space: space
+    });
+  },
+
+  saveHourlyRate(e) {
+    var space = this.state.space;
+    this.setState({
+      loaded: false
+    });
+
+    request
+    .put('/api/parking-spaces/' + this.state.space._id)
+    .send(this.state.space)
+    .end((err, res) => {
+      this.setState({
+        loaded: true,
+        space: JSON.parse(res.text)
+      });
+    });
   },
 
   render() {
     var Panel = ReactBootstrap.Panel;
-    var space = this.props.space;
+    var Button = ReactBootstrap.Button;
+    var Input = ReactBootstrap.Input;
+
+    var space = this.state.space;
     var style = space.isAvailable ? 'success' : 'danger';
 
     var occupiedAt = new Date(space.occupiedAt);
@@ -37,6 +72,13 @@ var ParkingSpaceView = React.createClass({
     var title = (
       <a href={locationUrl} target='_blank'>{location}</a>
     );
+
+    var updateButton = (
+      <Button onClick={this.saveHourlyRate}>
+        Update
+      </Button>
+    );
+
     return (
       <Panel header={title} eventKey={this.props.key} bsStyle={style}>
         { space.occupiedBy && (
@@ -48,10 +90,18 @@ var ParkingSpaceView = React.createClass({
             </span>
           </p>
         )}
-        <p>
+        <Loader loaded={this.state.loaded}>
           <strong>Hourly Rate: </strong>
-          {numeral(space.hourlyRate).format('$0,0.00')}
-        </p>
+          { space.occupiedBy && (<span>
+            {numeral(space.hourlyRate).format('$0,0.00')}
+          </span>)}
+          { !space.occupiedBy && (
+            <Input type='text' value={this.state.space.hourlyRate}
+              addonBefore='$'
+              buttonAfter={updateButton}
+              onChange={this.updateHourlyRate}/>
+          )}
+        </Loader>
       </Panel>
     );
   }
