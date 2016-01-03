@@ -1,11 +1,11 @@
 var express = require('express');
 var passport = require('passport');
-var router = express.Router();
 var request = require('request');
-
+var router = express.Router();
 var user = require('./controllers/user');
 var User = require('./models/user');
 var m2x = require('./controllers/m2x-controller');
+var api = require('./controllers/api');
 
 var isLoggedIn = function(req) {
   return !!req.user;

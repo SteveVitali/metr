@@ -3,8 +3,9 @@ var mongoose = require('mongoose');
 var _ = require('underscore');
 var User = require('../models/user');
 var ParkingSpace = require('../models/parking-space');
+var config = require('../config');
 
-mongoose.connect(require('../config/mongo-url'));
+mongoose.connect(process.env.MONGO_URL || config.MONGO_URL);
 
 var getRandomElement = function(arr) {
   return arr[Math.floor(Math.random() * arr.length)];

@@ -4,7 +4,7 @@
   "description": "Internet of things parking meters",
   "main": "app.js",
   "engines": {
-    "node" : "4.2.3"
+    "node": "4.2.3"
   },
   "scripts": {
     "start": "node ./bin/www"
@@ -50,10 +50,10 @@
     "react": "^0.13.3",
     "react-bootstrap": "0.26.2",
     "reflux": "^0.3.0",
+    "request": "^2.67.0",
     "serve-favicon": "^2.3.0",
     "superagent": "^1.6.1",
-    "underscore": "^1.8.3",
-    "request": "^2.67.0"
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "babelify": "6.4.0",

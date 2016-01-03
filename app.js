@@ -35,7 +35,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // Mongoose
-mongoose.connect(config.MONGO_URL);
+mongoose.connect(process.env.MONGO_URL || config.MONGO_URL);
 
 // Initialize routes
 require('./routes')(app);
