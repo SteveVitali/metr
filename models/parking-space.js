@@ -14,7 +14,26 @@ var ParkingSpace = mongoose.Schema({
   isAvailable: Boolean,
   hourlyRate: Number,
   location: [Number], // Longitude, Latitude
-  m2xId: String
+  m2xId: String,
+  address: {
+    number: {
+      type: String,
+      uppercase: true
+    },
+    street: {
+      type: String,
+      uppercase: true
+    },
+    city: {
+      type: String,
+      uppercase: true
+    },
+    state: {
+      type: String,
+      uppercase: true
+    },
+    zip: String
+  }
 });
 
 ParkingSpace.statics.findAvailable = function(callback) {
