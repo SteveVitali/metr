@@ -2,4 +2,3 @@ node_modules/
 npm-debug.log
 .DS_Store
 config/mongo-url.js
-public/build/
