@@ -5,7 +5,7 @@ var request = require('request');
 
 var user = require('./controllers/user');
 var User = require('./models/user');
-var m2x = require('./controllers/m2x-controller'); 
+var m2x = require('./controllers/m2x-controller');
 
 var isLoggedIn = function(req) {
   return !!req.user;
@@ -86,6 +86,12 @@ module.exports = function(app) {
       request(opts, function(err, result, body) {
         res.send(res.headers);
       });
+  });
+  // m2x post trigger - david
+  app.post("/m2x-update", function (req, res) {
+    console.log("m2x data received");
+    var sensorData = req.body.values;
+    console.log(sensorData);
   });
 
   app.get('/debug/devices', function(req, res) {
