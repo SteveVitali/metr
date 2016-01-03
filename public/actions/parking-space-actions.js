@@ -6,7 +6,7 @@ var ParkingSpaceActions = Reflux.createActions([
   'createRandomSpace'
 ]);
 
-TodoActions.createRandomSpace.preEmit = function(space) {
+ParkingSpaceActions.createRandomSpace.preEmit = function(space) {
   request.post('/api/parking-spaces', space, function(spaceAfter) {
     console.log('created space (before)', space, 'after', spaceAfter);
   });

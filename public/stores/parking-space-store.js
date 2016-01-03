@@ -1,21 +1,17 @@
 var Reflux = require('reflux');
-var _ = require('underscore');
+var _ = require('lodash');
 var request = require('superagent');
-var ParkingspaceActions = require('./parking-space-actions.js');
+var ParkingSpaceActions = require('../actions/parking-space-actions');
 
 var ParkingSpaceStore = Reflux.createStore({
   listenables: [ParkingSpaceActions],
 
-  init: function() {
+  init() {
     this.listenTo(ParkingSpaceActions.load, this.fetchData);
   },
 
-  getInitialState: function() {
-    return this.spaces = [];
-  },
-
-  fetchData: function() {
-    var url = '/api/parking-spaces/for-user/' + currentUser._id;
+  fetchData() {
+    var url = '/api/parking-spaces/for-user/' + window.currentUser._id;
     request.get(url, (res) => {
       this.spaces = res;
       console.log('response from current spaces', res);
@@ -23,10 +19,10 @@ var ParkingSpaceStore = Reflux.createStore({
     });
   },
 
-  updateSpaces: function(spaces) {
+  updateSpaces(spaces) {
     this.spaces = spaces;
     this.trigger(spaces);
   }
 });
 
-module.exports = TodoListStore;
+module.exports = ParkingSpaceStore;

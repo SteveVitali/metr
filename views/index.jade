@@ -1,7 +1,7 @@
 extends layout
 
 block content
+  script(src='/build/main.js')
+  input#user(value=JSON.stringify(user))
   .container
-    p Logged in as #{user.email}
-    a(href='/logout') Logout
     #app
