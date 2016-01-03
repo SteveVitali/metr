@@ -51,3 +51,10 @@ exports.findAvailableNearby = function(req, res) {
     }
   );
 };
+
+exports.ownedByUser = function(req, res) {
+  ParkingSpace.ownedByUser(req.params.id, function(err, spaces) {
+    if (err) return onErr(err);
+    res.send(spaces);
+  });
+};

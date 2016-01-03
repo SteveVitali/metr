@@ -1,12 +1,15 @@
 var express = require('express');
 var passport = require('passport');
-var router = express.Router();
 var request = require('request');
-
+var router = express.Router();
 var user = require('./controllers/user');
 var User = require('./models/user');
 var m2x = require('./controllers/m2x-controller');
+<<<<<<< HEAD
 var ParkingSpace = require('./controllers/api');
+=======
+var api = require('./controllers/api');
+>>>>>>> 7b029a1986dbeac3275650f8662ebf17357cb07b
 
 var isLoggedIn = function(req) {
   return !!req.user;
@@ -62,38 +65,52 @@ module.exports = function(app) {
     res.redirect('/');
   });
 
-  /*
-   * M2X DEVICE ROUTES
-   */
+  // JSON API endpoints
+  app.get('/api/parking-spaces', api.ParkingSpace.getAll);
+  app.get('/api/parking-spaces', api.ParkingSpace.findById);
+  app.get('/api/users/:id', api.User.findById);
+  app.get('/api/users/', api.User.getAll);
+  app.get('/api/parking-spaces/by-user/:id', api.ParkingSpace.ownedByUser);
 
+  // M2X DEVICE ROUTES
   app.post('/admin/device/register', function(req, res) {
-      //Can test this endpoint with following command:
-      //curl -i -X POST localhost:3000/admin/device/register -H "Content-Type: application/json" -d '{ "name": "Sample Device", "description": "test device", "visibility": "private"} '
-      var url = 'https://api-m2x.att.com/v2/devices';
-      console.log(req.body);
-      var data = {
-        name: req.body.name,
-        description: req.body.description,
-        visibility: req.body.visibility,
-      };
-      var opts = {
-        method: 'POST',
-        json: data,
-        url: url,
-        headers: {
-          'X-M2X-KEY': m2x.key
-        }
-      };
-      request(opts, function(err, result, body) {
-        res.send(res.headers);
-      });
+    // Can test this endpoint with following command:
+    // curl -i -X POST localhost:3000/admin/device/register -H
+    // "Content-Type: application/json" -d '{ "name": "Sample Device",
+    // "description": "test device", "visibility": "private"} '
+    var url = 'https://api-m2x.att.com/v2/devices';
+    console.log(req.body);
+    var data = {
+      name: req.body.name,
+      description: req.body.description,
+      visibility: req.body.visibility
+    };
+    var opts = {
+      method: 'POST',
+      json: data,
+      url: url,
+      headers: {
+        'X-M2X-KEY': m2x.key
+      }
+    };
+    request(opts, function(err, result, body) {
+      res.send(res.headers);
+    });
   });
   // m2x post trigger - david
+<<<<<<< HEAD
   app.post('/m2x-update', function (req, res) {
     console.log('m2x data received');
     var sensorData = req.body.values;
 
     res.send('OK');
+=======
+  app.post('/m2x-update', function(req, res) {
+    console.log('m2x data received');
+    var sensorData = req.body.values;;
+    res.send(res.headers);
+    console.log(sensorData);
+>>>>>>> 7b029a1986dbeac3275650f8662ebf17357cb07b
   });
 
   app.get('/debug/devices', function(req, res) {
@@ -102,4 +119,10 @@ module.exports = function(app) {
     });
   });
 
+  // m2x post trigger - david
+  app.post('/m2x-update', function(req, res) {
+    console.log('m2x data received');
+    var sensorData = req.body.values;
+    console.log(sensorData);
+  });
 };
