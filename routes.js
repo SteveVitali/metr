@@ -19,23 +19,25 @@ var loggedIn = function(req, res, next) {
 
 module.exports = function(app) {
   app.get('/', function(req, res) {
-    console.log('rendering', req.user);
+    if (!isLoggedIn(req)) {
+      return res.redirect('/login');
+    }
     res.render('index', {
       user: req.user
     });
   });
 
-  app.get('/register', function(req, res) {
-    res.render('register', {});
+  app.get('/signup', function(req, res) {
+    res.render('signup', {});
   });
 
-  app.post('/register', function(req, res) {
+  app.post('/signup', function(req, res) {
     var account = new User({ email: req.body.username });
     var password = req.body.password;
     User.register(account, password, function(err, account) {
       if (err) {
         console.log(err);
-        return res.render('register', { account: account });
+        return res.render('signup', { account: account });
       }
       passport.authenticate('local')(req, res, function() {
         res.redirect('/');
@@ -48,7 +50,6 @@ module.exports = function(app) {
   });
 
   app.post('/login', passport.authenticate('local'), function(req, res) {
-    console.log('authenticated...', req.user);
     res.redirect('/');
   });
 
