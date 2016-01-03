@@ -10,28 +10,23 @@ var onErr = function(err, res) {
 
 exports.occupy = function(req, res) {
   var userId = req.user ? req.user._id : req.query.userId;
-  console.log('occupying', userId);
   if (!userId) return onErr('Invalid user', res);
   User.findById(userId, function(err, user) {
     if (err) return onErr(err, res);
-    console.log('fetched user', user);
     // Triggered whenever a device sensor status goes from 0-1.
     // 1. Corresponding parking space in the database is set to reserved
     // from the given timestamp.
-    ParkingSpace.findByDeviceId(req.params.id, function(err, space) {
+    ParkingSpace.findById(req.params.id, function(err, space) {
       if (err || !space) return onErr(err || 'Invalid space', res);
       // TODO handling for trying to reserve an already taken space?
-      console.log('fetched space', space);
       space.isAvailable = false;
       space.occupiedBy = user && user._id;
       space.occupiedAt = new Date();
       user.currentSpace = space._id;
       space.save(function(err) {
         if (err) return onErr(err, res);
-        console.log('updated space', space);
         user.save(function(err) {
           if (err) return onErr(err, res);
-          console.log('updated user', user);
           res.send('Success');
         });
       });
