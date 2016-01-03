@@ -53,7 +53,7 @@ ParkingSpace.statics.findByDeviceID = function(deviceID, callback) {
   return this.find({ deviceID: deviceID }).exec(callback);
 };
 
-ParkingSpace.statics.findNearby = function(lng, lat, meters, callback) {
+ParkingSpace.statics.findNearby = function(lng, lat, miles, callback) {
   var EQUATORIAL_RADIUS = 3963.2;
   return this.find({
     location: {
