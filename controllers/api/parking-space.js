@@ -94,8 +94,28 @@ exports.create = function(req, res) {
   ];
 
   async.waterfall(tasks, function(err, data) {
-    if (err) return onErr(err);
+    if (err) return onErr(err, res);
     res.json(data);
+  });
+};
+
+exports.update = function(req, res) {
+  var body = req.body;
+  var depopulate = function(field) {
+    body[field] = (_.isObject(body[field]) && body[field]._id)
+      ? body[field]._id
+      : body[field];
+  };
+  depopulate('owner');
+  depopulate('occupiedBy');
+
+  ParkingSpace.findById(req.params.id, function(err, space) {
+    if (err) return onErr(err, res);
+    space = _.extend(space, body);
+    space.save(function(err) {
+      if (err) return onErr(err, res);
+      res.send(space);
+    });
   });
 };
 

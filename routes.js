@@ -83,6 +83,7 @@ module.exports = function(app) {
   app.get('/api/parking-spaces/find/nearby', api.ParkingSpace.findNearby);
   app.get('/api/parking-spaces/find/nearby/available', api.ParkingSpace.findAvailableNearby);
   app.post('/api/parking-spaces', api.ParkingSpace.create);
+  app.put('/api/parking-spaces/:id', api.ParkingSpace.update);
 
   app.get('/api/users/:id', api.User.findById);
   app.get('/api/users/', api.User.getAll);

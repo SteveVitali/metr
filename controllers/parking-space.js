@@ -59,7 +59,6 @@ exports.occupyPost = function(req, res) {
   });
 };
 
-
 exports.leave = function(req, res) {
   var userId = req.user ? req.user._id : req.query.userId;
   if (!userId) return onErr('Invalid user', res);
