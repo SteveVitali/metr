@@ -18,7 +18,7 @@ exports.occupy = function(req, res) {
     // Triggered whenever a device sensor status goes from 0-1.
     // 1. Corresponding parking space in the database is set to reserved
     // from the given timestamp.
-    ParkingSpace.findById(req.params.id, function(err, space) {
+    ParkingSpace.findByDeviceId(req.params.id, function(err, space) {
       if (err || !space) return onErr(err || 'Invalid space', res);
       // TODO handling for trying to reserve an already taken space?
       console.log('fetched space', space);
