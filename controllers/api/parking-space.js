@@ -130,7 +130,7 @@ const m2xTriggerOpts = {
   }
 };
 
-exports.createSpace = function(req, res) {
+exports.create = function(req, res) {
   //Invoked whenever a device is registered with the service.
   tasks = [
     function(callback) {
