@@ -31,10 +31,8 @@ var ParkingSpacesList = React.createClass({
     });
   },
 
-  submitParkingSpace(data) {
-    // submit the space
-    // ...
-    console.log('submitting parking spaece...', data);
+  submitParkingSpace(spaces) {
+    console.log('submitting parking spaece...', spaces);
     this.toggleRegisterForm();
   },
 

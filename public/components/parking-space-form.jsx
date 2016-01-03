@@ -61,9 +61,19 @@ var ParkingSpaceForm = React.createClass({
     });
   },
 
-  onSubmit(data) {
-    console.log('data', data);
-    this.props.onSubmit && this.props.onSubmit(data);
+  onSubmit() {
+    var parkingSpaceBase = {
+      owner: currentUser._id,
+      isAvailable: true,
+      hourlyRate: 5
+    };
+    var parkingSpaces = _.map(this.state.chosenAddressesMap, function(loc) {
+      return _.extend(parkingSpaceBase, {
+        address: loc,
+        location: [loc.longitude, loc.latitude]
+      });
+    });
+    this.props.onSubmit && this.props.onSubmit(parkingSpaces);
   },
 
   render() {
@@ -124,7 +134,9 @@ var ParkingSpaceForm = React.createClass({
                   checked={!!this.state.chosenAddressesMap[i]}
                   onClick={(e) => {
                     var chosenAddressesMap = this.state.chosenAddressesMap;
-                    chosenAddressesMap[i] = e.target.checked;
+                    chosenAddressesMap[i] = e.target.checked
+                      ? this.state.eligibleLocations[i]
+                      : undefined;
                     this.setState({
                       chosenAddressesMap: chosenAddressesMap
                     });
