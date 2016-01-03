@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var async = require('async');
-var request= require('superagent');
+var request = require('superagent');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var ParkingSpaceActions = require('../actions/parking-space-actions.js');
@@ -55,11 +55,11 @@ var ParkingSpacesList = React.createClass({
     return (
       <div className='container'>
         <h4>
-          Your Spaces ({(this.props.user.spaces || []).length})
+          Your Spaces ({(this.props.spaces || []).length})
         </h4>
-        { _.map(this.props.spaces, function(space) {
+        { _.map(this.props.spaces, (space, key) => {
           return (
-            <ParkingSpaceView space={space} user={this.props.user}/>
+            <ParkingSpaceView space={space} user={this.props.user} key={key}/>
           );
         })}
         <Button bsStyle='primary' onClick={this.toggleRegisterForm}>

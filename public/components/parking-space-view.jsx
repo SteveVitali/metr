@@ -3,7 +3,7 @@ var ReactBootstrap = require('react-bootstrap');
 
 var ParkingSpaceView = React.createClass({
   propTypes: {
-    spaces: React.PropTypes.object.isRequired,
+    space: React.PropTypes.object.isRequired,
     user: React.PropTypes.object.isRequired
   },
 

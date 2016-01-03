@@ -24,7 +24,7 @@ var App = React.createClass({
       <span>
         <NavigationBar user={this.props.user}/>
         <ParkingSpaceList user={this.props.user}
-          spaces={this.state.parkingSpaces || []}/>
+          spaces={this.state.spaces || []}/>
       </span>
     );
   }
