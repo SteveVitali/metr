@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var ParkingSpace = mongoose.Schema({
+  deviceID: String,
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
@@ -8,13 +9,16 @@ var ParkingSpace = mongoose.Schema({
   // The user occupying the space, if any
   occupiedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    default: null
   },
   // False if space occupied or owner has closed spot
-  isAvailable: Boolean,
+  isAvailable: {
+    type: Boolean,
+    default: true
+  },
   hourlyRate: Number,
   location: [Number], // Longitude, Latitude
-  m2xId: String,
   address: {
     number: {
       type: String,
@@ -40,12 +44,12 @@ ParkingSpace.statics.findAvailable = function(callback) {
   return this.find({ isAvailable: true }).exec(callback);
 };
 
-ParkingSpace.statics.findByM2xId = function(id, callback) {
-  return this.findOne({ m2xId: id }).exec(callback);
-};
-
 ParkingSpace.statics.ownedByUser = function(userId, callback) {
   return this.find({ owner: userId }).exec(callback);
+
+//M2X ID.
+ParkingSpace.statics.findByDeviceID = function(deviceID, callback) {
+  return this.find({ deviceID: deviceID }).exec(callback);
 };
 
 ParkingSpace.statics.findNearby = function(lng, lat, meters, callback) {
