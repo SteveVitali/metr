@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var moment = require('moment');
+var numeral = require('numeral');
 
 var ParkingSpaceView = React.createClass({
   propTypes: {
@@ -20,11 +21,22 @@ var ParkingSpaceView = React.createClass({
   render() {
     var Panel = ReactBootstrap.Panel;
     var space = this.props.space;
-    var title = space.address
-      ? space.address.fullAddress
-      : [space.location[0], space.location[1]].join(' ');
     var style = space.isAvailable ? 'success' : 'danger';
+
     var occupiedAt = new Date(space.occupiedAt);
+
+    var location = space.address
+      ? space.address.fullAddress
+      : [space.location[0], space.location[1]].join(', ');
+
+    var locationUrl = 'https://www.google.com/maps/place/' + (space.address
+      ? space.address.fullAddress
+      : [[space.location[1], space.location[0]].join(',')]
+    );
+
+    var title = (
+      <a href={locationUrl} target='_blank'>{location}</a>
+    );
     return (
       <Panel header={title} eventKey={this.props.key} bsStyle={style}>
         { space.occupiedBy && (
@@ -36,6 +48,10 @@ var ParkingSpaceView = React.createClass({
             </span>
           </p>
         )}
+        <p>
+          <strong>Hourly Rate: </strong>
+          {numeral(space.hourlyRate).format('$0,0.00')}
+        </p>
       </Panel>
     );
   }
