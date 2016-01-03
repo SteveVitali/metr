@@ -1,4 +1,3 @@
-var request = require('request');
 var async = require('async');
 var ParkingSpace = require('../../models').ParkingSpace;
 var m2x = require('../m2x-controller');
@@ -6,80 +5,6 @@ var m2x = require('../m2x-controller');
 var onErr = function(err, res) {
   err && console.log(err);
   res.status(500).send(err);
-};
-
-exports.getAll = function(req, res) {
-  ParkingSpace.find({})
-  .exec(function(err, spaces) {
-    if (err) return onErr(err, res);
-    res.send(spaces);
-  });
-};
-
-exports.getParkingSaturation = function(req, res) {
-  ParkingSpace
-  .find({})
-  .exec(function(err, spaces) {
-    if (err) return onErr(err, res);
-    var numAvailable = spaces.filter(function(space) {
-      return space.isAvailable;
-    }).length;
-    var saturation = numAvailable / spaces.length * 100;
-    res.send(saturation);
-  });
-};
-
-exports.findById = function(req, res) {
-  ParkingSpace.findById(req.params.id, function(err, space) {
-    if (err) return onErr(err, res);
-    res.send(space);
-  });
-};
-
-// Use the M2X device id to identify the parking-space.
-exports.findByDeviceID = function(req, res) {
-  ParkingSpace.findByName(req.params.name, function(err, space) {
-    if (err) return onErr(err, res);
-    res.send(space);
-  });
-};
-
-exports.findAvailable = function(req, res) {
-  ParkingSpace.findAvailable(function(err, spaces) {
-    if (err) return onErr(err, res);
-    res.send(spaces);
-  });
-};
-
-exports.findNearby = function(req, res) {
-  var lng = Number(req.query.lng);
-  var lat = Number(req.query.lat);
-  var miles = Number(req.query.miles);
-  ParkingSpace.findNearby(lng, lat, miles, function(err, spaces) {
-    if (err) return onErr(err, res);
-    res.send(spaces);
-  });
-};
-
-exports.findAvailableNearby = function(req, res) {
-  var lng = Number(req.query.lng);
-  var lat = Number(req.query.lat);
-  var miles = Number(req.query.miles);
-
-  ParkingSpace.findAvailableNearby(
-    lng, lat, miles,
-    function(err, spaces) {
-      if (err) return onErr(err, res);
-      res.send(spaces);
-    }
-  );
-};
-
-exports.ownedByUser = function(req, res) {
-  ParkingSpace.ownedByUser(req.params.id, function(err, spaces) {
-    if (err) return onErr(err);
-    res.send(spaces);
-  });
 };
 
 function createDevice(name, callback) {
@@ -175,17 +100,76 @@ exports.create = function(req, res) {
   });
 };
 
-exports.occupySpace = function(req, res) {
-  // Triggered whenever a device sensor status goes from 0-1.
-  // 1. Corresponding parking space in the database is set to reserved
-  // from the given timestamp.
-  ParkingSpace.findByDeviceID(req.params.name, function(err, space) {
+exports.getAll = function(req, res) {
+  ParkingSpace.find({})
+  .exec(function(err, spaces) {
     if (err) return onErr(err, res);
-    // TODO handling for trying to reserve an already taken space?
-    space.isAvailable = false;
-    space.save(function(err) {
+    res.send(spaces);
+  });
+};
+
+exports.getParkingSaturation = function(req, res) {
+  ParkingSpace
+  .find({})
+  .exec(function(err, spaces) {
+    if (err) return onErr(err, res);
+    var numAvailable = spaces.filter(function(space) {
+      return space.isAvailable;
+    }).length;
+    var saturation = numAvailable / spaces.length * 100;
+    res.send(saturation);
+  });
+};
+
+exports.findById = function(req, res) {
+  ParkingSpace.findById(req.params.id, function(err, space) {
+    if (err) return onErr(err, res);
+    res.send(space);
+  });
+};
+
+// Use the M2X device id to identify the parking-space.
+exports.findByDeviceID = function(req, res) {
+  ParkingSpace.findByName(req.params.name, function(err, space) {
+    if (err) return onErr(err, res);
+    res.send(space);
+  });
+};
+
+exports.findAvailable = function(req, res) {
+  ParkingSpace.findAvailable(function(err, spaces) {
+    if (err) return onErr(err, res);
+    res.send(spaces);
+  });
+};
+
+exports.findNearby = function(req, res) {
+  var lng = Number(req.query.lng);
+  var lat = Number(req.query.lat);
+  var miles = Number(req.query.miles);
+  ParkingSpace.findNearby(lng, lat, miles, function(err, spaces) {
+    if (err) return onErr(err, res);
+    res.send(spaces);
+  });
+};
+
+exports.findAvailableNearby = function(req, res) {
+  var lng = Number(req.query.lng);
+  var lat = Number(req.query.lat);
+  var miles = Number(req.query.miles);
+
+  ParkingSpace.findAvailableNearby(
+    lng, lat, miles,
+    function(err, spaces) {
       if (err) return onErr(err, res);
-      res.send('Success');
-    });
+      res.send(spaces);
+    }
+  );
+};
+
+exports.ownedByUser = function(req, res) {
+  ParkingSpace.ownedByUser(req.params.id, function(err, spaces) {
+    if (err) return onErr(err);
+    res.send(spaces);
   });
 };
