@@ -6,6 +6,7 @@ var user = require('./controllers/user');
 var User = require('./models/user');
 var m2x = require('./controllers/m2x-controller');
 var api = require('./controllers/api');
+var parkingSpace = require('./controllers/parking-space');
 
 var isLoggedIn = function(req) {
   return !!req.user;
@@ -60,6 +61,9 @@ module.exports = function(app) {
     req.logout();
     res.redirect('/');
   });
+
+  app.post('/parking-space/leave', loggedIn, parkingSpace.leave);
+  app.post('/parking-space/occupy', loggedIn, parkingSpace.occupy);
 
   // JSON API endpoints
   app.get('/api/parking-spaces', api.ParkingSpace.getAll);
