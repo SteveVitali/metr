@@ -28,23 +28,22 @@ exports.findAvailable = function(req, res) {
 };
 
 exports.findNearby = function(req, res) {
-  var MAX_DIST_IN_METERS = 2000;
-  var lon = req.query.lng;
-  var lat = req.query.lat;
-
-  ParkingSpace.findNearby(lon, lat, MAX_DIST_IN_METERS, function(err, spaces) {
+  var lng = Number(req.query.lng);
+  var lat = Number(req.query.lat);
+  var miles = Number(req.query.miles);
+  ParkingSpace.findNearby(lng, lat, miles, function(err, spaces) {
     if (err) return onErr(err, res);
     res.send(spaces);
   });
 };
 
 exports.findAvailableNearby = function(req, res) {
-  var MAX_DIST_IN_METERS = 2000;
-  var lon = req.query.lng;
-  var lat = req.query.lat;
+  var lng = Number(req.query.lng);
+  var lat = Number(req.query.lat);
+  var miles = Number(req.query.miles);
 
   ParkingSpace.findAvailableNearby(
-    lon, lat, MAX_DIST_IN_METERS,
+    lng, lat, miles,
     function(err, spaces) {
       if (err) return onErr(err, res);
       res.send(spaces);

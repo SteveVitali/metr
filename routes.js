@@ -68,6 +68,8 @@ module.exports = function(app) {
   app.get('/api/users/:id', api.User.findById);
   app.get('/api/users/', api.User.getAll);
   app.get('/api/parking-spaces/for-user/:id', api.ParkingSpace.ownedByUser);
+  app.get('/api/parking-spaces/find/nearby', api.ParkingSpace.findNearby);
+  app.get('/api/parking-spaces/find/nearby/available', api.ParkingSpace.findAvailableNearby);
 
   // M2X DEVICE ROUTES
   app.post('/admin/device/register', function(req, res) {

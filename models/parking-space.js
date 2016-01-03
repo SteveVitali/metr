@@ -48,31 +48,29 @@ ParkingSpace.statics.ownedByUser = function(userId, callback) {
   return this.find({ owner: userId }).exec(callback);
 };
 
-ParkingSpace.statics.findNearby = function(lng, lat, meters, callback) {
+ParkingSpace.statics.findNearby = function(lng, lat, miles, callback) {
+  var EQUATORIAL_RADIUS = 3963.2;
   return this.find({
     location: {
-      $nearSphere: {
-        $geometry: {
-          type: 'Point',
-          coordinates: [lng, lat]
-        },
-        $minDistance: 0,
-        $maxDistance: meters
+      $geoWithin: {
+        $centerSphere: [
+          [lng, lat],
+          miles / EQUATORIAL_RADIUS
+        ]
       }
     }
   }).exec(callback);
 };
 
-ParkingSpace.statics.findAvailableNearby = function(lng, lat, meters, callback) {
+ParkingSpace.statics.findAvailableNearby = function(lng, lat, miles, callback) {
+  var EQUATORIAL_RADIUS = 3963.2;
   return this.find({
     location: {
-      $nearSphere: {
-        $geometry: {
-          type: 'Point',
-          coordinates: [lng, lat]
-        },
-        $minDistance: 0,
-        $maxDistance: meters
+      $geoWithin: {
+        $centerSphere: [
+          [lng, lat],
+          miles / EQUATORIAL_RADIUS
+        ]
       }
     },
     isAvailable: true
