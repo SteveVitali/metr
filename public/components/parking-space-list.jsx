@@ -1,4 +1,6 @@
 var _ = require('lodash');
+var async = require('async');
+var request= require('superagent');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var ParkingSpaceActions = require('../actions/parking-space-actions.js');
@@ -32,7 +34,18 @@ var ParkingSpacesList = React.createClass({
   },
 
   submitParkingSpace(spaces) {
-    console.log('submitting parking spaece...', spaces);
+    async.eachSeries(spaces, function(space, next) {
+      request.post('/api/parking-spaces')
+        .type('json')
+        .send(space)
+        .end((err, res) => {
+          !err && console.log('successfully created', res);
+          next(err);
+        });
+    },
+    function(err) {
+      err && console.log(err);
+    });
     this.toggleRegisterForm();
   },
 

@@ -1,4 +1,6 @@
+var _ = require('lodash');
 var async = require('async');
+var request = require('request');
 var ParkingSpace = require('../../models').ParkingSpace;
 var m2x = require('../m2x-controller');
 
@@ -22,7 +24,9 @@ function createDevice(name, callback) {
       'X-M2X-KEY': m2x.key
     }
   };
-  return request(opts, callback);
+  return request(opts, function(err, response, body) {
+    callback(err, response, body);
+  });
 };
 
 const m2xStreamOpts = {
@@ -57,19 +61,15 @@ const m2xTriggerOpts = {
 
 exports.create = function(req, res) {
   //Invoked whenever a device is registered with the service.
-  tasks = [
+  var tasks = [
     function(callback) {
-      createDevice(req.body.name, callback);
+      createDevice('placeholder', callback);
     },
     function(result, body, callback) {
-      ParkingSpace.create({
-        deviceID: body.id,
-        owner: req.params.ownerID,
-        isAvailable: true,
-        hourlyRate: req.hourlyRate,
-        location: req.location
-      },
-      function(err, space) {
+      var space = _.extend(req.body, {
+        deviceID: body.id
+      });
+      ParkingSpace.create(space, function(err, space) {
         if (err) return callback(err);
 
         var opts = m2xStreamOpts;
@@ -84,7 +84,6 @@ exports.create = function(req, res) {
         });
       });
     },
-
     function(data, callback) {
       var opts = m2xTriggerOpts;
       opts.url = `https://api-m2x.att.com/v2/devices/${data.deviceID}/triggers`;

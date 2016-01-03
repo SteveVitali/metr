@@ -31,7 +31,6 @@ var ParkingSpaceForm = React.createClass({
   },
 
   lookupIdentity(data) {
-    console.log('data', data, 'looking up identity');
     request.post('/white-pages/identity-check')
       .type('json')
       .send(data)
@@ -67,12 +66,15 @@ var ParkingSpaceForm = React.createClass({
       isAvailable: true,
       hourlyRate: 5
     };
-    var parkingSpaces = _.map(this.state.chosenAddressesMap, function(loc) {
-      return _.extend(parkingSpaceBase, {
-        address: loc,
-        location: [loc.longitude, loc.latitude]
-      });
-    });
+    var parkingSpaces = _.compact(
+      _.map(this.state.chosenAddressesMap, function(loc) {
+        if (!loc) return;
+        return _.extend(parkingSpaceBase, {
+          address: loc,
+          location: [loc.longitude, loc.latitude]
+        });
+      })
+    );
     this.props.onSubmit && this.props.onSubmit(parkingSpaces);
   },
 
