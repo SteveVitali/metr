@@ -61,6 +61,12 @@ module.exports = function(app) {
     res.redirect('/');
   });
 
+  // JSON API endpoints
+  app.get('/api/parking-spaces', api.ParkingSpace.getAll);
+  app.get('/api/parking-spaces', api.ParkingSpace.findById);
+  app.get('/api/users/:id', api.User.findById);
+  app.get('/api/users/', api.User.getAll);
+  app.get('/api/parking-spaces/by-user/:id', api.ParkingSpace.ownedByUser);
 
   // M2X DEVICE ROUTES
   app.post('/admin/device/register', function(req, res) {

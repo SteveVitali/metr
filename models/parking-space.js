@@ -25,6 +25,10 @@ ParkingSpace.statics.findByM2xId = function(id, callback) {
   return this.findOne({ m2xId: id }).exec(callback);
 };
 
+ParkingSpace.statics.ownerByUser = function(userId, callback) {
+  return this.find({ owner: userId }).exec(callback);
+};
+
 ParkingSpace.statics.findNearby = function(lng, lat, meters, callback) {
   return this.find({
     location: {
