@@ -1,7 +1,7 @@
 var express = require('express');
 var passport = require('passport');
 var router = express.Router();
-var http = require('http');
+var request = require('request');
 
 var user = require('./controllers/user');
 var User = require('./models/user');
@@ -66,28 +66,26 @@ module.exports = function(app) {
    */
 
   app.post('/admin/device/register', function(req, res) {
-      //curl -i -X POST https://api-m2x.att.com/v2/devices -H "X-M2X-KEY: 7611hg8391k834829gkff640j8j990i2" -H "Content-Type: application/json" -d '{ "name": "Sample Device", "description": "My first device", "visibility": "public" }'
-      //req.body
-      var opts = {
-        host: 'https://api-m2x.att.com/v2/devices',
-        method: 'POST',
-        headers: {
-          'X-M2X-KEY': m2x.key,
-          'Content-Type': 'application/json'
-        }
-      };
-
-      var data = JSON.stringify({
+      //Can test this endpoint with following command:
+      //curl -i -X POST localhost:3000/admin/device/register -H "Content-Type: application/json" -d '{ "name": "Sample Device", "description": "test device", "visibility": "private"} '
+      var url = 'https://api-m2x.att.com/v2/devices';
+      console.log(req.body);
+      var data = {
         name: req.body.name,
         description: req.body.description,
         visibility: req.body.visibility,
+      };
+      var opts = {
+        method: 'POST',
+        json: data,
+        url: url,
+        headers: {
+          'X-M2X-KEY': m2x.key
+        }
+      };
+      request(opts, function(err, result, body) {
+        res.send(res.headers);
       });
-
-      var post_req = http.request(opts, function(res) {
-
-      });
-      post_req.write(data);
-      post_req.end();
   });
 
   app.get('/debug/devices', function(req, res) {
