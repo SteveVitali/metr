@@ -44,7 +44,7 @@ exports.occupyPost = function(req, res) {
   // 1. Corresponding parking space in the database is set to reserved
   // from the given timestamp.
   console.log('occupy post: req.body', req.body);
-  ParkingSpace.findByDeviceId(req.body.name, function(err, space) {
+  ParkingSpace.findByDeviceId(req.body.device.id, function(err, space) {
     if (err || !space) return onErr(err || 'Invalid space', res);
     // TODO handling for trying to reserve an already taken space?
     console.log('fetched space', space);

@@ -50,7 +50,7 @@ const m2xTriggerOpts = {
       'prox': { 'gte' : 0 }
     },
     frequency: 'continuous',
-    callback_url: 'https://27d7fb80.ngrok.com/m2x-update',
+    callback_url: 'https://metr.herokuapp.com/parking-space/occupy',
     status: 'enabled',
     send_location: 'true'
   },
