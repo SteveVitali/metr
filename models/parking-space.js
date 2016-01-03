@@ -65,7 +65,10 @@ ParkingSpace.statics.findNearby = function(lng, lat, miles, callback) {
         ]
       }
     }
-  }).exec(callback);
+  })
+  .populate('owner')
+  .populate('occupiedBy')
+  .exec(callback);
 };
 
 ParkingSpace.statics.findAvailableNearby = function(lng, lat, miles, callback) {
@@ -80,7 +83,10 @@ ParkingSpace.statics.findAvailableNearby = function(lng, lat, miles, callback) {
       }
     },
     isAvailable: true
-  }).exec(callback);
+  })
+  .populate('owner')
+  .populate('occupiedBy')
+  .exec(callback);
 };
 
 module.exports = mongoose.model('ParkingSpace', ParkingSpace);
