@@ -19,8 +19,14 @@ var userOptions = {
   ],
   firstName: ['Steve', 'Kieraj', 'JT', 'David', 'Ayy', 'Welp'],
   lastName: ['Vitali', 'Mumick', 'Cho', 'Liao', 'Lmao','Womp'],
-  currentSpace: [null],
-  spaces: [[]]
+  currentSpace: [null, null, null, null, null, null],
+  spaces: [[], [], [], [], [], []]
+};
+
+var getUser = function(i) {
+  return _.mapObject(userOptions, function(value, key) {
+    return value[i];
+  });
 };
 
 var randomObject = function(options) {
@@ -31,7 +37,7 @@ var randomObject = function(options) {
 
 var userIds = [];
 async.times(6, function(n, next) {
-  var user = new User(randomObject(userOptions));
+  var user = new User(getUser(n));
   user.save(function(err) {
     err && console.log(err);
     console.log('created', user);
