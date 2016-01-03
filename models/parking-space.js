@@ -44,7 +44,11 @@ ParkingSpace.statics.findAvailable = function(callback) {
 };
 
 ParkingSpace.statics.ownedByUser = function(userId, callback) {
-  return this.find({ owner: userId }).exec(callback);
+  return this
+    .find({ owner: userId })
+    .populate('owner')
+    .populate('occupiedBy')
+    .exec(callback);
 };
 
 // M2X ID.

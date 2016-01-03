@@ -39,7 +39,7 @@ var randomObject = function(options) {
 var userIds = [];
 async.times(18, function(n, next) {
   var newUser = getObject(userOptions, n);
-  newUser = _.extend({
+  newUser = _.extend(newUser, {
     email: newUser.firstName[0] + newUser.lastName + '@gmail.com',
     currentSpace: null,
     spaces: []

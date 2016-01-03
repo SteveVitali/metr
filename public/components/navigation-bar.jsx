@@ -14,6 +14,10 @@ var NavigationBar = React.createClass({
     return {};
   },
 
+  logout() {
+    window.location.href = '/logout';
+  },
+
   render() {
     var Navbar = ReactBootstrap.Navbar;
     var Nav = ReactBootstrap.Nav;
@@ -37,7 +41,9 @@ var NavigationBar = React.createClass({
             <NavDropdown eventKey={3} title={firstName} id={1}>
               <MenuItem eventKey={3.1}>My Spaces</MenuItem>
               <MenuItem divider />
-              <MenuItem eventKey={3.3}>Logout</MenuItem>
+              <MenuItem eventKey={3.3} onSelect={this.logout}>
+                Logout
+              </MenuItem>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

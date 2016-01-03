@@ -8,7 +8,7 @@ var onErr = function(err, res) {
 exports.getUserHistory = function(req, res) {
   if (!req.params.id) return onErr('No user id', res);
   Trip.getUserHistory(req.params.id, function(err, trips) {
-    if (err) return onErr(err);
+    if (err) return onErr(err, res);
     res.send(trips);
   });
 };
@@ -16,7 +16,7 @@ exports.getUserHistory = function(req, res) {
 exports.getParkingSpaceHistory = function(req, res) {
   if (!req.params.id) return onErr('No user id', res);
   Trip.getParkingSpaceHistory(req.params.id, function(err, trips) {
-    if (err) return onErr(err);
+    if (err) return onErr(err, res);
     res.send(trips);
   });
 };
