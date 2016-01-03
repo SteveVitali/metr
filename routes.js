@@ -66,7 +66,7 @@ module.exports = function(app) {
   app.get('/parking-space/leave', parkingSpace.leave);
   app.get('/parking-space/occupy/:id', parkingSpace.occupy);
 
-  app.post('/white-pages/identity-check', loggedIn, whitePages.identityCheck);
+  app.post('/white-pages/identity-check', whitePages.identityCheck);
 
   // JSON API endpoints
   app.get('/api/parking-spaces', api.ParkingSpace.getAll);
