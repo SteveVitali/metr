@@ -46,6 +46,7 @@
     "react": "^0.13.3",
     "react-bootstrap": "0.26.2",
     "reflux": "^0.3.0",
+    "request": "^2.67.0",
     "serve-favicon": "^2.3.0"
   },
   "devDependencies": {

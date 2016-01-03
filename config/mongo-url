@@ -1,0 +1,1 @@
+module.exports = 'mongodb://steve:lxayylmao@ds037155.mongolab.com:37155/parking-bnb';
