@@ -7,6 +7,7 @@ var User = require('./models/user');
 var m2x = require('./controllers/m2x-controller');
 var api = require('./controllers/api');
 var parkingSpace = require('./controllers/parking-space');
+var whitePages = require('./controllers/white-pages');
 
 var isLoggedIn = function(req) {
   return !!req.user;
@@ -62,8 +63,10 @@ module.exports = function(app) {
     res.redirect('/');
   });
 
-  app.post('/parking-space/leave', loggedIn, parkingSpace.leave);
-  app.post('/parking-space/occupy/:id', loggedIn, parkingSpace.occupy);
+  app.get('/parking-space/leave', loggedIn, parkingSpace.leave);
+  app.get('/parking-space/occupy/:id', loggedIn, parkingSpace.occupy);
+
+  app.get('/white-pages/identity-check', loggedIn, whitePages.identityCheck);
 
   // JSON API endpoints
   app.get('/api/parking-spaces', api.ParkingSpace.getAll);
