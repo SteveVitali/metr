@@ -53,7 +53,7 @@ ParkingSpace.statics.ownedByUser = function(userId, callback) {
 
 // M2X ID.
 ParkingSpace.statics.findByDeviceID = function(deviceID, callback) {
-  return this.find({ deviceID: deviceID }).exec(callback);
+  return this.findOne({ deviceID: deviceID }).exec(callback);
 };
 
 ParkingSpace.statics.findNearby = function(lng, lat, miles, callback) {

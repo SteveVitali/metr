@@ -38,14 +38,19 @@ exports.occupyPost = function(req, res) {
   // Triggered whenever a device sensor status goes from 0-1.
   // 1. Corresponding parking space in the database is set to reserved
   // from the given timestamp.
-  console.log('occupy post: req.body', req.body);
-  ParkingSpace.findByDeviceId(req.body.device.id, function(err, space) {
+  console.log(req.body);
+  ParkingSpace.findByDeviceID(req.body.device.id, function(err, space) {
     if (err || !space) return onErr(err || 'Invalid space', res);
     // TODO handling for trying to reserve an already taken space?
-    console.log('fetched space', space);
-    space.isAvailable = false;
-    space.occupiedBy = user && user._id;
-    space.occupiedAt = new Date();
+    var value = req.body.values.prox.value;
+    if (value) {
+      space.isAvailable = false;
+      space.occupiedAt = new Date();
+    } else {
+      space.isAvailable = true;
+      space.occupiedAt = undefined;
+      space.occupiedBy = undefined;
+    }
     space.save(function(err) {
       if (err) return onErr(err, res);
       console.log('updated space', space);
@@ -53,6 +58,7 @@ exports.occupyPost = function(req, res) {
     });
   });
 };
+
 
 exports.leave = function(req, res) {
   var userId = req.user ? req.user._id : req.query.userId;
