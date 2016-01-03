@@ -6,6 +6,7 @@ var request = require('request');
 var user = require('./controllers/user');
 var User = require('./models/user');
 var m2x = require('./controllers/m2x-controller');
+var ParkingSpace = require('./controllers/api');
 
 var isLoggedIn = function(req) {
   return !!req.user;
@@ -88,11 +89,11 @@ module.exports = function(app) {
       });
   });
   // m2x post trigger - david
-  app.post("/m2x-update", function (req, res) {
-    console.log("m2x data received");
-    var sensorData = req.body.values;;
-    res.send(res.headers);
-    console.log(sensorData);
+  app.post('/m2x-update', function (req, res) {
+    console.log('m2x data received');
+    var sensorData = req.body.values;
+
+    res.send('OK');
   });
 
   app.get('/debug/devices', function(req, res) {

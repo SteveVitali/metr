@@ -58,11 +58,5 @@ app.use(function(err, req, res, next) {
   });
 });
 
-// m2x post trigger - david
-app.post("/m2x-update", function (req, res) {
-  console.log("m2x data received");
-  var sensorData = req.body.values;
-  console.log(sensorData);
-});
 
 module.exports = app;
