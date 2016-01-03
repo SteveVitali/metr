@@ -3,6 +3,7 @@ var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var ParkingSpaceActions = require('../actions/parking-space-actions.js');
 var ParkingSpaceView = require('../components/parking-space-view.jsx');
+var ParkingSpaceForm = require('../components/parking-space-form.jsx');
 
 var ParkingSpacesList = React.createClass({
   propTypes: {
@@ -30,9 +31,10 @@ var ParkingSpacesList = React.createClass({
     });
   },
 
-  submitParkingSpace() {
+  submitParkingSpace(data) {
     // submit the space
     // ...
+    console.log('submitting parking spaece...', data);
     this.toggleRegisterForm();
   },
 
@@ -52,26 +54,11 @@ var ParkingSpacesList = React.createClass({
         <Button bsStyle='primary' onClick={this.toggleRegisterForm}>
           Register Space
         </Button>
-        <Modal bsSize='large'
-          aria-labelledby='register-space-modal'
-          show={this.state.showRegisterForm}>
-          <Modal.Header closeButton>
-            <Modal.Title id='register-space-modal'>
-              Register Parking Space
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Form goes here.
-          </Modal.Body>
-          <Modal.Footer>
-            <Button bsStyle='primary' onClick={this.submitParkingSpace}>
-              Submit
-            </Button>
-            <Button onClick={this.toggleRegisterForm}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        { this.state.showRegisterForm && (
+          <ParkingSpaceForm user={this.props.user}
+            dismissForm={this.toggleRegisterForm}
+            onSubmit={this.submitParkingSpace}/>
+        )}
       </div>
     );
   }
