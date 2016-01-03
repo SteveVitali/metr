@@ -1,6 +1,8 @@
 var express = require('express');
 var passport = require('passport');
 var router = express.Router();
+var http = require('http');
+
 var user = require('./controllers/user');
 var User = require('./models/user');
 var m2x = require('./controllers/m2x-controller'); 
@@ -62,6 +64,27 @@ module.exports = function(app) {
   /*
    * M2X DEVICE ROUTES
    */
+
+  app.post('/admin/device/register', function(req, res) {
+      //curl -i -X POST https://api-m2x.att.com/v2/devices -H "X-M2X-KEY: 7611hg8391k834829gkff640j8j990i2" -H "Content-Type: application/json" -d '{ "name": "Sample Device", "description": "My first device", "visibility": "public" }'
+      //req.body
+      var opts {
+        host: 'https://api-m2x.att.com/v2/devices',
+        method: 'POST',
+        headers: {
+          'X-M2X-KEY': m2x.key,
+          'Content-Type': 'application/json'
+        }
+      };
+
+      var data = JSON.stringify({
+        name: req.body.name,
+        description: req.body.description,
+        visibility: req.body.visibility,
+      });
+
+
+  });
 
   app.get('/debug/devices', function(req, res) {
     m2x.list(function(err, data) {
