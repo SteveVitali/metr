@@ -14,3 +14,7 @@ exports.list = (next) => {
     }
 	});
 };
+
+//This may not be safe, haha.
+exports.key = API_KEY;
+
