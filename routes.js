@@ -66,18 +66,22 @@ module.exports = function(app) {
   app.get('/parking-space/leave', parkingSpace.leave);
   app.get('/parking-space/occupy/:id', parkingSpace.occupy);
 
-  app.get('/white-pages/identity-check', loggedIn, whitePages.identityCheck);
+  app.post('/white-pages/identity-check', loggedIn, whitePages.identityCheck);
 
   // JSON API endpoints
   app.get('/api/parking-spaces', api.ParkingSpace.getAll);
   app.get('/api/parking-spaces', api.ParkingSpace.findById);
-  app.get('/api/users/:id', api.User.findById);
-  app.get('/api/users/', api.User.getAll);
-  app.get('/api/users/find-by/email', api.User.findByEmail);
   app.get('/api/parking-spaces/for-user/:id', api.ParkingSpace.ownedByUser);
   app.get('/api/parking-spaces/find/nearby', api.ParkingSpace.findNearby);
   app.get('/api/parking-spaces/find/nearby/available', api.ParkingSpace.findAvailableNearby);
   app.post('/api/parking-spaces', api.ParkingSpace.create);
+
+  app.get('/api/users/:id', api.User.findById);
+  app.get('/api/users/', api.User.getAll);
+  app.get('/api/users/find-by/email', api.User.findByEmail);
+
+  app.get('/api/trips/of-user/:id', api.Trip.getUserHistory);
+  app.get('/api/trips/of-space/:id', api.Trip.getParkingSpaceHistory);
 
   // m2x post trigger - david
   app.post('/m2x-update', function(req, res) {
