@@ -69,7 +69,7 @@ var ParkingSpaceForm = React.createClass({
     var parkingSpaces = _.compact(
       _.map(this.state.chosenAddressesMap, function(loc) {
         if (!loc) return;
-        return _.extend(parkingSpaceBase, {
+        return _.extend(_.clone(parkingSpaceBase), {
           address: loc,
           location: [loc.longitude, loc.latitude]
         });

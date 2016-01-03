@@ -52,16 +52,20 @@ var ParkingSpacesList = React.createClass({
   render() {
     var Button = ReactBootstrap.Button;
     var Modal = ReactBootstrap.Modal;
+    var Accordion = ReactBootstrap.Accordion;
+    console.log('this.props', this.props);
     return (
       <div className='container'>
         <h4>
           Your Spaces ({(this.props.spaces || []).length})
         </h4>
-        { _.map(this.props.spaces, (space, key) => {
-          return (
-            <ParkingSpaceView space={space} user={this.props.user} key={key}/>
-          );
-        })}
+        <Accordion>
+          { _.map(this.props.spaces, (space, key) => {
+            return (
+              <ParkingSpaceView space={space} user={this.props.user} key={key}/>
+            );
+          })}
+        </Accordion>
         <Button bsStyle='primary' onClick={this.toggleRegisterForm}>
           Register Space
         </Button>
