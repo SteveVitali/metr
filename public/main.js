@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var App = require('./app.jsx');
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -6,5 +7,5 @@ document.addEventListener('DOMContentLoaded', () => {
   var user = JSON.parse(document.getElementById('user').value);
   window.currentUser = user; // hack until I figure out right way
   var rootNode = React.createElement(App, { user: user }, parent);
-  React.render(rootNode, parent);
+  ReactDOM.render(rootNode, parent);
 });

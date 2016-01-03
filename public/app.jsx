@@ -1,6 +1,6 @@
 var React = require('react');
 var Reflux = require('reflux');
-
+var NavigationBar = require('./components/navigation-bar.jsx');
 var ParkingSpaceStore = require('./stores/parking-space-store.js');
 var ParkingSpaceList = require('./components/parking-space-list.jsx');
 
@@ -19,10 +19,13 @@ var App = React.createClass({
     return {};
   },
 
-  render: function() {
+  render() {
     return (
-      <ParkingSpaceList user={this.props.user}
-        spaces={this.state.parkingSpaces}/>
+      <span>
+        <NavigationBar user={this.props.user}/>
+        <ParkingSpaceList user={this.props.user}
+          spaces={this.state.parkingSpaces || []}/>
+      </span>
     );
   }
 });

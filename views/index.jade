@@ -2,6 +2,5 @@ extends layout
 
 block content
   script(src='/build/main.js')
-  input#user(value=JSON.stringify(user))
-  .container
-    #app
+  input#user(type='hidden', value=JSON.stringify(user))
+  #app  
