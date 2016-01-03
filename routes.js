@@ -68,7 +68,7 @@ module.exports = function(app) {
   app.post('/admin/device/register', function(req, res) {
       //curl -i -X POST https://api-m2x.att.com/v2/devices -H "X-M2X-KEY: 7611hg8391k834829gkff640j8j990i2" -H "Content-Type: application/json" -d '{ "name": "Sample Device", "description": "My first device", "visibility": "public" }'
       //req.body
-      var opts {
+      var opts = {
         host: 'https://api-m2x.att.com/v2/devices',
         method: 'POST',
         headers: {
@@ -83,7 +83,11 @@ module.exports = function(app) {
         visibility: req.body.visibility,
       });
 
+      var post_req = http.request(opts, function(res) {
 
+      });
+      post_req.write(data);
+      post_req.end();
   });
 
   app.get('/debug/devices', function(req, res) {
