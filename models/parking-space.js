@@ -13,11 +13,16 @@ var ParkingSpace = mongoose.Schema({
   // False if space occupied or owner has closed spot
   isAvailable: Boolean,
   hourlyRate: Number,
-  location: [Number] // Longitude, Latitude
+  location: [Number], // Longitude, Latitude
+  m2xId: String
 });
 
 ParkingSpace.statics.findAvailable = function(callback) {
   return this.find({ isAvailable: true }).exec(callback);
+};
+
+ParkingSpace.statics.findByM2xId = function(id, callback) {
+  return this.findOne({ m2xId: id }).exec(callback);
 };
 
 ParkingSpace.statics.findNearby = function(lng, lat, meters, callback) {
@@ -35,7 +40,7 @@ ParkingSpace.statics.findNearby = function(lng, lat, meters, callback) {
   }).exec(callback);
 };
 
-Parkingspace.statics.findAvailableNearby = function(lng, lat, meters, callback) {
+ParkingSpace.statics.findAvailableNearby = function(lng, lat, meters, callback) {
   return this.find({
     location: {
       $nearSphere: {
