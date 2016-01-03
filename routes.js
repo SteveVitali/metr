@@ -63,8 +63,8 @@ module.exports = function(app) {
     res.redirect('/');
   });
 
-  app.get('/parking-space/leave', loggedIn, parkingSpace.leave);
-  app.get('/parking-space/occupy/:id', loggedIn, parkingSpace.occupy);
+  app.get('/parking-space/leave', parkingSpace.leave);
+  app.get('/parking-space/occupy/:id', parkingSpace.occupy);
 
   app.get('/white-pages/identity-check', loggedIn, whitePages.identityCheck);
 
@@ -73,6 +73,7 @@ module.exports = function(app) {
   app.get('/api/parking-spaces', api.ParkingSpace.findById);
   app.get('/api/users/:id', api.User.findById);
   app.get('/api/users/', api.User.getAll);
+  app.get('/api/users/find-by/email', api.User.findByEmail);
   app.get('/api/parking-spaces/for-user/:id', api.ParkingSpace.ownedByUser);
   app.get('/api/parking-spaces/find/nearby', api.ParkingSpace.findNearby);
   app.get('/api/parking-spaces/find/nearby/available', api.ParkingSpace.findAvailableNearby);
