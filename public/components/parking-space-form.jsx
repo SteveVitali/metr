@@ -21,7 +21,8 @@ var ParkingSpaceForm = React.createClass({
       lastName: currentUser.lastName,
       address: {},
       showIdentityForm: true,
-      eligibleLocations: []
+      eligibleLocations: [],
+      chosenAddressesMap: {}
     };
   },
 
@@ -68,6 +69,10 @@ var ParkingSpaceForm = React.createClass({
   render() {
     var Button = ReactBootstrap.Button;
     var Modal = ReactBootstrap.Modal;
+    var ListGroup = ReactBootstrap.ListGroup;
+    var ListGroupItem = ReactBootstrap.ListGroupItem;
+    var Input = ReactBootstrap.Input;
+
     var identityForm = FormGenerator.create({
       firstName: {
         type: String,
@@ -109,9 +114,30 @@ var ParkingSpaceForm = React.createClass({
       }
     }, 'identityFormRef', this.lookupIdentity, true);
 
-    var propertySelection = _.map(this.state.eligibleLocations, function(loc) {
-      return <p>{loc.fullAddress}</p>;
-    });
+    var propertySelection = (
+      <span>
+        <ListGroup>
+          { _.map(this.state.eligibleLocations, (loc, i) => {
+            return (
+              <ListGroupItem href='#' key={i}>
+                <Input type='checkbox' label={loc.fullAddress}
+                  checked={!!this.state.chosenAddressesMap[i]}
+                  onClick={(e) => {
+                    var chosenAddressesMap = this.state.chosenAddressesMap;
+                    chosenAddressesMap[i] = e.target.checked;
+                    this.setState({
+                      chosenAddressesMap: chosenAddressesMap
+                    });
+                }}/>
+              </ListGroupItem>
+            );
+          })}
+        </ListGroup>
+        <Button bsStyle='primary' onClick={this.onSubmit}>
+          Create Parking Spaces
+        </Button>
+      </span>
+    );
 
     return (
       <Modal bsSize='large'
