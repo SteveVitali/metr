@@ -12,15 +12,22 @@ var getRandomElement = function(arr) {
 };
 
 var userOptions = {
-  email: [
-    'svitali@seas.upenn.edu', 'dliao@seas.upenn.edu',
-    'jcho@seas.upenn.edu', 'kmumick@seas.upenn.edu',
-    '14stevevitali@gmail.com', 'ayy@lmao.com'
+  firstName: [
+    'Steve', 'Kieraj', 'JT', 'David', 'Ayy', 'Welp',
+    'Charles', 'Charlie', 'Stephanie', 'Alex', 'John', 'Gary',
+    'Wilhelm', 'Fred', 'Friedrich', 'Ernest', 'Immanuel', 'Hentry'
   ],
-  firstName: ['Steve', 'Kieraj', 'JT', 'David', 'Ayy', 'Welp'],
-  lastName: ['Vitali', 'Mumick', 'Cho', 'Liao', 'Lmao','Womp'],
-  currentSpace: [null],
-  spaces: [[]]
+  lastName: [
+    'Vitali', 'Mumick', 'Cho', 'Liao', 'Lmao','Womp',
+    'Heisenberg', 'Nietzsche', 'Schiller', 'Kant', 'Rand', 'Grant',
+    'Kissinger', 'Kennedy', 'Bush', 'Sanders', 'Clinton', 'Mongo'
+  ]
+};
+
+var getObject = function(options, i) {
+  return _.mapObject(options, function(value, key) {
+    return value[i];
+  });
 };
 
 var randomObject = function(options) {
@@ -30,12 +37,17 @@ var randomObject = function(options) {
 };
 
 var userIds = [];
-async.times(6, function(n, next) {
-  var user = new User(randomObject(userOptions));
+async.times(18, function(n, next) {
+  var newUser = getObject(userOptions, n);
+  newUser = _.extend({
+    email: newUser.firstName[0] + newUser.lastName + '@gmail.com',
+    currentSpace: null,
+    spaces: []
+  });
+  var user = new User(newUser);
   user.save(function(err) {
     err && console.log(err);
     console.log('created', user);
-
     userIds.push(user._id);
     next();
   });
@@ -45,19 +57,41 @@ function(err) {
   var spaceOptions = {
     owner: userIds,
     isAvailable: [true, false],
-    occupiedBy: [null],
     hourlyRate: [1, 2, 3, 4, 5, 6, 7, 8, 9],
     location: [
-      [-122.405177, 37.796239],
-      [-122.404725, 37.794004],
-      [-122.408647, 37.793082],
-      [-122.401276, 37.794015],
-      [-122.406321, 37.794257],
-      [-122.403208, 37.794862]
+      [37.796239, -122.405177],
+      [37.794004, -122.404725],
+      [37.793082, -122.408647],
+      [37.794015, -122.401276],
+      [37.794257, -122.406321],
+      [37.794862, -122.403208],
+
+      [37.796149, -122.405929],
+      [37.794174, -122.403365],
+      [37.796344, -122.411809],
+      [37.792054, -122.409159],
+      [37.793962, -122.401348],
+      [37.797650, -122.400951],
+
+      [37.798845, -122.407099],
+      [37.797141, -122.412506],
+      [37.797607, -122.401638],
+      [37.795835, -122.408343],
+      [37.795742, -122.403548],
+      [37.792351, -122.406659]
     ]
   };
-  async.times(6, function(n, next) {
-    ParkingSpace.create(randomObject(spaceOptions), function(err, space) {
+  async.times(userIds.length, function(n, next) {
+    var space = randomObject(spaceOptions);
+    space = _.extend(space, {
+      occupiedBy: null,
+      hourlyRate: 5,
+      location: [
+        spaceOptions.location[n][1],
+        spaceOptions.location[n][0]
+      ]
+    });
+    ParkingSpace.create(space, function(err, space) {
       err && console.log(err);
       console.log('created', space);
       next();

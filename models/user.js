@@ -16,6 +16,10 @@ var User = mongoose.Schema({
   }]
 });
 
+User.statics.findByEmail = function(email, callback) {
+  return this.findOne({ email: email }).exec(callback);
+};
+
 User.plugin(passportLocalMongoose, {
   usernameField: 'email'
 });

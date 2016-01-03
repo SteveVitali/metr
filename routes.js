@@ -7,6 +7,7 @@ var User = require('./models/user');
 var m2x = require('./controllers/m2x-controller');
 var api = require('./controllers/api');
 var parkingSpace = require('./controllers/parking-space');
+var whitePages = require('./controllers/white-pages');
 
 var isLoggedIn = function(req) {
   return !!req.user;
@@ -62,18 +63,29 @@ module.exports = function(app) {
     res.redirect('/');
   });
 
-  app.post('/parking-space/leave', loggedIn, parkingSpace.leave);
-  app.post('/parking-space/occupy', loggedIn, parkingSpace.occupy);
+  app.get('/parking-space/leave', parkingSpace.leave);
+  app.get('/parking-space/occupy/:id', parkingSpace.occupy);
+
+  // POST versions for m2x
+  app.post('/parking-space/leave', parkingSpace.leave);
+  app.post('/parking-space/occupy/', parkingSpace.occupyPost);
+
+  app.post('/white-pages/identity-check', whitePages.identityCheck);
 
   // JSON API endpoints
   app.get('/api/parking-spaces', api.ParkingSpace.getAll);
   app.get('/api/parking-spaces', api.ParkingSpace.findById);
-  app.get('/api/users/:id', api.User.findById);
-  app.get('/api/users/', api.User.getAll);
   app.get('/api/parking-spaces/for-user/:id', api.ParkingSpace.ownedByUser);
   app.get('/api/parking-spaces/find/nearby', api.ParkingSpace.findNearby);
   app.get('/api/parking-spaces/find/nearby/available', api.ParkingSpace.findAvailableNearby);
   app.post('/api/parking-spaces', api.ParkingSpace.create);
+
+  app.get('/api/users/:id', api.User.findById);
+  app.get('/api/users/', api.User.getAll);
+  app.get('/api/users/find-by/email', api.User.findByEmail);
+
+  app.get('/api/trips/of-user/:id', api.Trip.getUserHistory);
+  app.get('/api/trips/of-space/:id', api.Trip.getParkingSpaceHistory);
 
   // m2x post trigger - david
   app.post('/m2x-update', function(req, res) {

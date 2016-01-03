@@ -19,3 +19,10 @@ exports.findById = function(req, res) {
     res.send(user);
   });
 };
+
+exports.findByEmail = function(req, res) {
+  User.findByEmail(req.query.email, function(err, user) {
+    if (err) return onErr(err, res);
+    res.send(user);
+  });
+};

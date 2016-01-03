@@ -20,7 +20,7 @@ var NavigationBar = React.createClass({
     var NavItem = ReactBootstrap.NavItem;
     var NavDropdown = ReactBootstrap.NavDropdown;
     var MenuItem = ReactBootstrap.MenuItem;
-    var firstName = this.props.user.firstName;
+    var firstName = this.props.user.firstName || 'Profile';
     return (
       <Navbar inverse>
         <Navbar.Header>
@@ -34,7 +34,7 @@ var NavigationBar = React.createClass({
             <NavItem eventKey={1} href="#">My Spaces</NavItem>
           </Nav>
           <Nav pullRight>
-            <NavDropdown eventKey={3} title={firstName} id='nav-dropdown'>
+            <NavDropdown eventKey={3} title={firstName} id={1}>
               <MenuItem eventKey={3.1}>My Spaces</MenuItem>
               <MenuItem divider />
               <MenuItem eventKey={3.3}>Logout</MenuItem>

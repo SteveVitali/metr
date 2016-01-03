@@ -1,8 +1,11 @@
 var _ = require('lodash');
+var async = require('async');
+var request = require('superagent');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var ParkingSpaceActions = require('../actions/parking-space-actions.js');
 var ParkingSpaceView = require('../components/parking-space-view.jsx');
+var ParkingSpaceForm = require('../components/parking-space-form.jsx');
 
 var ParkingSpacesList = React.createClass({
   propTypes: {
@@ -30,48 +33,47 @@ var ParkingSpacesList = React.createClass({
     });
   },
 
-  submitParkingSpace() {
-    // submit the space
-    // ...
+  submitParkingSpace(spaces) {
+    async.eachSeries(spaces, function(space, next) {
+      request.post('/api/parking-spaces')
+        .type('json')
+        .send(space)
+        .end((err, res) => {
+          !err && console.log('successfully created', res);
+          next(err);
+        });
+    },
+    function(err) {
+      err && console.log(err);
+    });
     this.toggleRegisterForm();
   },
 
   render() {
     var Button = ReactBootstrap.Button;
     var Modal = ReactBootstrap.Modal;
+    var Accordion = ReactBootstrap.Accordion;
+    console.log('this.props', this.props);
     return (
       <div className='container'>
         <h4>
-          Your Spaces ({(this.props.user.spaces || []).length})
+          Your Spaces ({(this.props.spaces || []).length})
         </h4>
-        { _.map(this.props.spaces, function(space) {
-          return (
-            <ParkingSpaceView space={space} user={this.props.user}/>
-          );
-        })}
+        <Accordion>
+          { _.map(this.props.spaces, (space, key) => {
+            return (
+              <ParkingSpaceView space={space} user={this.props.user} key={key}/>
+            );
+          })}
+        </Accordion>
         <Button bsStyle='primary' onClick={this.toggleRegisterForm}>
           Register Space
         </Button>
-        <Modal bsSize='large'
-          aria-labelledby='register-space-modal'
-          show={this.state.showRegisterForm}>
-          <Modal.Header closeButton>
-            <Modal.Title id='register-space-modal'>
-              Register Parking Space
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Form goes here.
-          </Modal.Body>
-          <Modal.Footer>
-            <Button bsStyle='primary' onClick={this.submitParkingSpace}>
-              Submit
-            </Button>
-            <Button onClick={this.toggleRegisterForm}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        { this.state.showRegisterForm && (
+          <ParkingSpaceForm user={this.props.user}
+            dismissForm={this.toggleRegisterForm}
+            onSubmit={this.submitParkingSpace}/>
+        )}
       </div>
     );
   }

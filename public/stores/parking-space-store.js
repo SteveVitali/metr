@@ -11,10 +11,9 @@ var ParkingSpaceStore = Reflux.createStore({
   },
 
   fetchData() {
-    var url = '/api/parking-spaces/for-user/' + window.currentUser._id;
-    request.get(url, (res) => {
-      this.spaces = res;
-      console.log('response from current spaces', res);
+    var url = '/api/parking-spaces/for-user/' + currentUser._id;
+    request.get(url, (err, res) => {
+      this.spaces = JSON.parse(res.text);
       this.trigger(this.spaces);
     });
   },

@@ -21,23 +21,21 @@ var ParkingSpace = mongoose.Schema({
   hourlyRate: Number,
   location: [Number], // [Longitude, Latitude]
   address: {
-    number: {
-      type: String,
-      uppercase: true
-    },
-    street: {
-      type: String,
-      uppercase: true
-    },
-    city: {
-      type: String,
-      uppercase: true
-    },
-    state: {
-      type: String,
-      uppercase: true
-    },
-    zip: String
+    city: String,
+    zip: String,
+    state: String, // code,
+    country: String, // code,
+    fullAddress: String,
+    house: String,
+    streetName: String,
+    streetType: String,
+    streetDirection: String,
+    aptNumber: String,
+    latitude: Number,
+    longitude: Number,
+    line1: String,
+    line2: String,
+    line3: String
   }
 });
 
