@@ -62,11 +62,10 @@ var ParkingSpacesList = React.createClass({
     var Button = ReactBootstrap.Button;
     var Modal = ReactBootstrap.Modal;
     var Accordion = ReactBootstrap.Accordion;
-    console.log('this.props', this.props);
     return (
       <div className='container'>
         <h4>
-          Your Spaces ({(this.props.spaces || []).length})
+          My Spaces ({(this.props.spaces || []).length})
         </h4>
         <Loader loaded={this.state.loaded}>
           <Accordion>
