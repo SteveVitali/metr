@@ -5,7 +5,7 @@ exports.occupy = function(req, res) {
   // Triggered whenever a device sensor status goes from 0-1.
   // 1. Corresponding parking space in the database is set to reserved
   // from the given timestamp.
-  ParkingSpace.findByDeviceID(req.params.name, function(err, space) {
+  ParkingSpace.findById(req.params.id, function(err, space) {
     if (err) return onErr(err, res);
     // TODO handling for trying to reserve an already taken space?
     space.isAvailable = false;
@@ -35,7 +35,7 @@ exports.leave = function(req, res) {
       req.user.save(function(err) {
         if (err) return onErr(err, res);
         res.send({
-          price: hours * space.hourlyRate
+          cost: hours * space.hourlyRate
         });
       });
     });

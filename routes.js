@@ -63,7 +63,7 @@ module.exports = function(app) {
   });
 
   app.post('/parking-space/leave', loggedIn, parkingSpace.leave);
-  app.post('/parking-space/occupy', loggedIn, parkingSpace.occupy);
+  app.post('/parking-space/occupy/:id', loggedIn, parkingSpace.occupy);
 
   // JSON API endpoints
   app.get('/api/parking-spaces', api.ParkingSpace.getAll);

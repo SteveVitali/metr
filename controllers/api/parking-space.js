@@ -89,7 +89,7 @@ exports.create = function(req, res) {
       var opts = m2xTriggerOpts;
       opts.url = `https://api-m2x.att.com/v2/devices/${data.deviceID}/triggers`;
       return request(m2xTriggerOpts, function(err, result, data) {
-          callback(err, data);
+        callback(err, data);
       });
     }
   ];
@@ -123,14 +123,6 @@ exports.getParkingSaturation = function(req, res) {
 
 exports.findById = function(req, res) {
   ParkingSpace.findById(req.params.id, function(err, space) {
-    if (err) return onErr(err, res);
-    res.send(space);
-  });
-};
-
-// Use the M2X device id to identify the parking-space.
-exports.findByDeviceID = function(req, res) {
-  ParkingSpace.findByName(req.params.name, function(err, space) {
     if (err) return onErr(err, res);
     res.send(space);
   });
