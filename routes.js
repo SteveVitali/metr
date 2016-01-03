@@ -91,7 +91,7 @@ module.exports = function(app) {
   app.post("/m2x-update", function (req, res) {
     console.log("m2x data received");
     var sensorData = req.body.values;;
-    res.send(res.headers);
+    // res.send(res.headers);
     console.log(sensorData);
   });
 
