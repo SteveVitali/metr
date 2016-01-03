@@ -3,6 +3,7 @@ var async = require('async');
 var request = require('superagent');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
+var Loader = require('react-loader');
 var ParkingSpaceActions = require('../actions/parking-space-actions.js');
 var ParkingSpaceView = require('../components/parking-space-view.jsx');
 var ParkingSpaceForm = require('../components/parking-space-form.jsx');
@@ -19,7 +20,8 @@ var ParkingSpacesList = React.createClass({
 
   getInitialState() {
     return {
-      showRegisterForm: false
+      showRegisterForm: false,
+      loaded: true
     };
   },
 
@@ -34,6 +36,9 @@ var ParkingSpacesList = React.createClass({
   },
 
   submitParkingSpace(spaces) {
+    this.setState({
+      loaded: false
+    });
     async.eachSeries(spaces, function(space, next) {
       request.post('/api/parking-spaces')
         .type('json')
@@ -43,8 +48,12 @@ var ParkingSpacesList = React.createClass({
           next(err);
         });
     },
-    function(err) {
+    (err) => {
       err && console.log(err);
+      ParkingSpaceActions.load();
+      this.setState({
+        loaded: true
+      });
     });
     this.toggleRegisterForm();
   },
@@ -59,21 +68,23 @@ var ParkingSpacesList = React.createClass({
         <h4>
           Your Spaces ({(this.props.spaces || []).length})
         </h4>
-        <Accordion>
-          { _.map(this.props.spaces, (space, key) => {
-            return (
-              <ParkingSpaceView space={space} user={this.props.user} key={key}/>
-            );
-          })}
-        </Accordion>
-        <Button bsStyle='primary' onClick={this.toggleRegisterForm}>
-          Register Space
-        </Button>
-        { this.state.showRegisterForm && (
-          <ParkingSpaceForm user={this.props.user}
-            dismissForm={this.toggleRegisterForm}
-            onSubmit={this.submitParkingSpace}/>
-        )}
+        <Loader loaded={this.state.loaded}>
+          <Accordion>
+            { _.map(this.props.spaces, (space, key) => {
+              return (
+                <ParkingSpaceView space={space} user={this.props.user} key={key}/>
+              );
+            })}
+          </Accordion>
+          <Button bsStyle='primary' onClick={this.toggleRegisterForm}>
+            Register Space
+          </Button>
+          { this.state.showRegisterForm && (
+            <ParkingSpaceForm user={this.props.user}
+              dismissForm={this.toggleRegisterForm}
+              onSubmit={this.submitParkingSpace}/>
+          )}
+        </Loader>
       </div>
     );
   }
