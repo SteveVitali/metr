@@ -1,5 +1,7 @@
 var gulp = require('gulp');
 var source = require('vinyl-source-stream');
+var gulp = require('gulp');
+var source = require('vinyl-source-stream');
 var browserify = require('browserify');
 var babelify = require('babelify');
 var reactify = require('reactify');
@@ -8,8 +10,8 @@ var resolutions = require('browserify-resolutions');
 
 gulp.task('browserify', function() {
   var bundler = browserify({
-    entries: ['./public/views/app.js'],
-    paths: ['./node_modules','./public/js'],
+    entries: ['./public/main.js'],
+    paths: ['./node_modules','./public'],
     transform: [reactify],
     debug: true,
     // Required properties for watchify
