@@ -69,9 +69,9 @@ var ParkingSpacesList = React.createClass({
         </h4>
         <Loader loaded={this.state.loaded}>
           <Accordion>
-            { _.map(this.props.spaces, (space, key) => {
+            { _.map(this.props.spaces, (space, i) => {
               return (
-                <ParkingSpaceView space={space} user={this.props.user} key={key}/>
+                <ParkingSpaceView space={space} user={this.props.user} key={i}/>
               );
             })}
           </Accordion>

@@ -2,6 +2,7 @@ var _ = require('lodash');
 var request = require('superagent');
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
+var Loader = require('react-loader');
 var FormGenerator = require('form-generator-react');
 
 var ParkingSpaceForm = React.createClass({
@@ -22,7 +23,8 @@ var ParkingSpaceForm = React.createClass({
       address: {},
       showIdentityForm: true,
       eligibleLocations: [],
-      chosenAddressesMap: {}
+      chosenAddressesMap: {},
+      loaded: true
     };
   },
 
@@ -31,31 +33,35 @@ var ParkingSpaceForm = React.createClass({
   },
 
   lookupIdentity(data) {
+    this.setState({
+      loaded: false
+    });
     request.post('/white-pages/identity-check')
-      .type('json')
-      .send(data)
-      .end((err, res) => {
-        this.setState({
-          showIdentityForm: false,
-          eligibleLocations: _.map(res.body || [], function(loc) {
-            return {
-              city: loc.city,
-              zip: loc.postal_code,
-              state: loc.state_code,
-              country: loc.country_code,
-              fullAddress: loc.address,
-              house: loc.house,
-              streetName: loc.street_name,
-              streetType: loc.street_type,
-              streetDirection: loc.pre_dir,
-              aptNumber: loc.apt_number,
-              latitude: loc.lat_long.latitude,
-              longitude: loc.lat_long.longitude,
-              line1: '1143 S Sydenham St',
-              line2: '',
-              line3: 'Philadelphia PA 19146-3113'
-            };
-          })
+    .type('json')
+    .send(data)
+    .end((err, res) => {
+      this.setState({
+        loaded: true,
+        showIdentityForm: false,
+        eligibleLocations: _.map(res.body || [], function(loc) {
+          return {
+            city: loc.city,
+            zip: loc.postal_code,
+            state: loc.state_code,
+            country: loc.country_code,
+            fullAddress: loc.address,
+            house: loc.house,
+            streetName: loc.street_name,
+            streetType: loc.street_type,
+            streetDirection: loc.pre_dir,
+            aptNumber: loc.apt_number,
+            latitude: loc.lat_long.latitude,
+            longitude: loc.lat_long.longitude,
+            line1: loc.standard_address_line1,
+            line2: loc.standard_address_line2,
+            line3: loc.standard_address_location
+          };
+        })
       });
     });
   },
@@ -89,8 +95,7 @@ var ParkingSpaceForm = React.createClass({
       firstName: {
         type: String,
         label: 'First Name',
-        defaultValue: this.state.firstName,
-        isRequired: true
+        defaultValue: this.state.firstName
       },
       lastName: {
         type: String,
@@ -154,17 +159,17 @@ var ParkingSpaceForm = React.createClass({
     );
 
     return (
-      <Modal bsSize='large'
-        aria-labelledby='register-space-modal'
-        show={true}>
+      <Modal bsSize='large' aria-labelledby='register-space-modal' show={true}>
         <Modal.Header closeButton>
           <Modal.Title id='register-space-modal'>
             Register Parking Space
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          { this.state.showIdentityForm && identityForm }
-          { !this.state.showIdentityForm && propertySelection }
+          <Loader loaded={this.state.loaded}>
+            { this.state.showIdentityForm && identityForm }
+            { !this.state.showIdentityForm && propertySelection }
+          </Loader>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.props.dismissForm}>
