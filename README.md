@@ -11,3 +11,6 @@ A user can use an iOS application to find available parking spaces on Metr. Once
 
 ### Web Frontend
 A user can register and administrate his own parking spaces using the Metr web application. Here he can adjust hourly parking rates, hours of availability, get notifications of delinquent parkers, and the like.
+
+### Architecture
+![Architecture Diagram](http://cdn.rawgit.com/SteveVitali/iot-parking-meter/master/metr.svg)
